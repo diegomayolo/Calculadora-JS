@@ -69,6 +69,68 @@ document.getElementById( 'equal' ).addEventListener( 'click', calculate );
  */
 function calculate()
 {
+   resultInput.value = 'Error';
+   resultInput.classList.add( 'error', 'text-center' );
+   
+   /* Evaluating the value of the input field as a mathematical expression. */
    const result = eval( input.value );
+   
    resultInput.value = result;
+   resultInput.classList.remove( 'error', 'text-center' );
 }
+
+/* This is the code that is responsible for copying the result to the clipboard. It is adding an
+event listener to the button with the id of copyToClipboard. When the button is clicked, it will
+check
+if the button's text is 'Copy'. If it is, it will change the button's text to 'Copied!', add the
+success class to the button, and copy the result to the clipboard. After one second, it will call
+the
+clearBtnClicked function and pass the button to it. */
+document.getElementById('copyToClipboard').addEventListener('click', function(e)
+{
+   const button = e.currentTarget;
+   
+   if ( button.innerText === 'Copy' )
+   {
+      button.classList.add( 'success', 'transition' );
+      button.innerText = 'Copied!';
+      navigator.clipboard.writeText( resultInput.value );
+   }
+
+   setTimeout( () => clearBtnClicked( button ), 3000 );
+});
+
+/**
+ * If the button's text is 'Copied', then change it to 'Copy' and remove the 'success' class.
+ * @param button - The button that was clicked.
+ */
+function clearBtnClicked( button )
+{
+   button.classList.remove( 'success', 'transition' );
+   button.innerText = 'Copy';
+};
+
+/* This is the code that is responsible for switching the theme of the calculator. It is adding an
+event listener to the button with the id of themeSwitcher. When the button is clicked, it will check
+if the theme is dark. If it is, it will set the theme to light. If it is not, it will set the theme
+to dark. */
+document.getElementById( 'themeSwitcher' ).addEventListener( 'click', function() 
+{
+   if ( main.dataset.theme === 'dark' )
+   {
+      root.style.setProperty( '--bg-color', '#f1f5f9' );
+      root.style.setProperty( '--font-color', '#212529' );
+      root.style.setProperty( '--border-color', '#aaa' );
+      root.style.setProperty( '--primary-color', '#26834a' );
+      main.dataset.theme = 'light';
+   }
+   
+   else 
+   {
+      root.style.setProperty( '--bg-color', '#212529' );
+      root.style.setProperty( '--font-color', '#f1f5f9' );
+      root.style.setProperty( '--border-color', '#666' );
+      root.style.setProperty( '--primary-color', '#4dff91' );
+      main.dataset.theme = 'dark';
+   }
+});
